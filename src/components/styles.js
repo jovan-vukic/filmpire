@@ -9,7 +9,7 @@ export default makeStyles(() => ({
     height: '70px',
   },
   content: {
-    flexGrow: 1, //inside styles.js for css property 'flex-grow' we use camelCase
+    flexGrow: 1, //notice: 'flex-grow' (.css) => 'flexGrow' (.js)
     padding: '2em', //generates space around an element's content
   },
 })); //notice: { return {...}; } <=> ({...})
