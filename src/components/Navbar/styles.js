@@ -1,11 +1,13 @@
 import { makeStyles } from '@mui/styles';
 
+const drawerWidth = 240; //static width of the sidebar of 240px
+
 export default makeStyles((theme) => ({
   toolbar: {
     height: '80px',
     display: 'flex',
     justifyContent: 'space-between',
-    marginLeft: '240px',
+    marginLeft: drawerWidth, //240px left for the sidebar
     [theme.breakpoints.down('sm')]: {
       marginLeft: 0,
       flexWrap: 'wrap',
@@ -16,5 +18,20 @@ export default makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       display: 'none',
     }, //affects only devices 'bigger' than small
+  },
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  linkButton: {
+    '&:hover': {
+      color: 'white !important',
+      textDecoration: 'none',
+    },
   },
 }));
