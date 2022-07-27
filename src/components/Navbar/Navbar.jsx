@@ -1,19 +1,42 @@
-import { React, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppBar, IconButton, Toolbar, Drawer, Button, Avatar, useMediaQuery } from '@mui/material';
 import { Menu, AccountCircle, Brightness4, Brightness7 } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Sidebar, Search } from '..';
 import useStyles from './styles';
+import { fetchToken, createSessionId, moviesApi } from '../../utils';
+import { setUser, userSelector } from '../../features/authUser';
 
 function Navbar() {
   const classes = useStyles();
   const isMobile = useMediaQuery('(max-width:600px)'); //if width > 600px => isMobile == false
   const theme = useTheme();
-  const isAutenticated = true; //will be implemented later
 
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const token = localStorage.getItem('request_token');
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const logInUser = async () => {
+      if (token) {
+        try {
+          const sessionId = localStorage.getItem('session_id') ? localStorage.getItem('session_id') : await createSessionId();
+
+          const { data: userData } = await moviesApi.get(`/account?session_id=${sessionId}`);
+          dispatch(setUser(userData));
+        } catch (error) {
+          console.log('Your user data could not be fetched.');
+        }
+      }
+    };
+    logInUser();
+  }, [token]);
+
+  const { isAuthenticated, user } = useSelector(userSelector); //notice: <=> useSelector((state) => state.currentUser)
+  console.log(user);
 
   return (
     <>
@@ -41,15 +64,15 @@ function Navbar() {
           </IconButton>
           {!isMobile && <Search /> }
           <div>
-            {!isAutenticated ? ( //login button is visible only if we are not logged in
-              <Button color="inherit" onClick={() => {}}>
+            {!isAuthenticated ? ( //login button is visible only if we are not logged in
+              <Button color="inherit" onClick={fetchToken}>
                 Login &nbsp; <AccountCircle />
               </Button>
             ) : (
               <Button
                 color="inherit"
                 component={Link} //link to a specific page
-                to="/profile/:id" //will be implemented later
+                to={`/profile/${user.id}`}
                 className={classes.linkButton}
                 onClick={() => {}} //will be implemented later
               >

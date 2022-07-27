@@ -19,6 +19,7 @@ function App() {
           <Route exact path="/movie/:id" element={<MovieInformation />} /> { /*notice: /:id <=> /<number>*/ }
           <Route exact path="/actors/:id" element={<Actors />} />
           <Route exact path="/" element={<Movies />} /> { /*notice: it's smart to use 'exact'*/ }
+          <Route exact path="/approved" element={<Movies />} />
           <Route exact path="/profile/:id" element={<Profile />} />
         </Switch>
       </main>
