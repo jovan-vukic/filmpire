@@ -4,7 +4,7 @@ import { Menu, AccountCircle, Brightness4, Brightness7 } from '@mui/icons-materi
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 
-import { Sidebar } from '..';
+import { Sidebar, Search } from '..';
 import useStyles from './styles';
 
 function Navbar() {
@@ -39,7 +39,7 @@ function Navbar() {
             { /*toggle functionality will be implemented later*/ }
             {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
-          {!isMobile && 'Search...'} { /*search bar will be implemented later*/ }
+          {!isMobile && <Search /> }
           <div>
             {!isAutenticated ? ( //login button is visible only if we are not logged in
               <Button color="inherit" onClick={() => {}}>
@@ -62,7 +62,7 @@ function Navbar() {
               </Button>
             )}
           </div>
-          {isMobile && 'Search...'} { /*search bar will be implemented later*/ }
+          {isMobile && <Search /> }
         </Toolbar>
       </AppBar>
       <div>
