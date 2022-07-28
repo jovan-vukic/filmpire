@@ -20,7 +20,6 @@ function Movies() {
   }
   if (error) return 'An error has ocured';
 
-  /*later we will implement search functionality*/
   if (!data.results.length) { //if a person searches for a movie...
     return (
       <Box display="flex" alignItems="center" mt="20px">

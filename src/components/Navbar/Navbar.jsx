@@ -36,7 +36,6 @@ function Navbar() {
   }, [token]);
 
   const { isAuthenticated, user } = useSelector(userSelector); //notice: <=> useSelector((state) => state.currentUser)
-  console.log(user);
 
   return (
     <>
