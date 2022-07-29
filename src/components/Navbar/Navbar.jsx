@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { AppBar, IconButton, Toolbar, Drawer, Button, Avatar, useMediaQuery } from '@mui/material';
 import { Menu, AccountCircle, Brightness4, Brightness7 } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { Sidebar, Search } from '..';
 import useStyles from './styles';
 import { fetchToken, createSessionId, moviesApi } from '../../utils';
 import { setUser, userSelector } from '../../features/authUser';
+import { ColorModeContext } from '../../utils/ToggleColorMode';
 
 function Navbar() {
   const classes = useStyles();
@@ -37,6 +38,8 @@ function Navbar() {
 
   const { isAuthenticated, user } = useSelector(userSelector); //notice: <=> useSelector((state) => state.currentUser)
 
+  const colorMode = useContext(ColorModeContext);
+
   return (
     <>
       <AppBar position="fixed">
@@ -56,9 +59,8 @@ function Navbar() {
           <IconButton
             color="inherit"
             sx={{ ml: 1 }} //mui inline style; ml == margin left
-            onClick={() => {}} //will be implemented later
+            onClick={colorMode.toggleColorMode}
           >
-            { /*toggle functionality will be implemented later*/ }
             {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
           {!isMobile && <Search /> }
@@ -73,7 +75,6 @@ function Navbar() {
                 component={Link} //link to a specific page
                 to={`/profile/${user.id}`}
                 className={classes.linkButton}
-                onClick={() => {}} //will be implemented later
               >
                 {!isMobile && <>My Movies &nbsp;</>}
                 <Avatar
