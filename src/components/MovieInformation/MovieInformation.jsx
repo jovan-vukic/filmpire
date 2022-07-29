@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Typography, Button, ButtonGroup, Grid, Box, CircularProgress, useMediaQuery, Rating } from '@mui/material';
 import { Movie as MovieIcon, Theaters, Language, PlusOne, Favorite, FavoriteBorderOutlined, Remove, ArrowBack } from '@mui/icons-material';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
@@ -13,6 +13,7 @@ import genreCategoryIcons from '../../assets/genres and categories';
 import { selectGenreOrCategory } from '../../features/currentGenreOrCategory';
 
 function MovieInformation() {
+  const history = useNavigate();
   const classes = useStyles();
   const noImage = 'https://t4.ftcdn.net/jpg/02/51/95/53/360_F_251955356_FAQH0U1y1TZw3ZcdPGybwUkH90a3VAhb.jpg';
 
@@ -43,14 +44,16 @@ function MovieInformation() {
   }
   if (error) {
     return (
-      <Box display="flex" justifyContent="center">
-        <Link to="/">Something has gone wrong - Go back</Link>
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <Button startIcon={<ArrowBack />} onClick={() => history(-1)} color="primary">
+          Something has gone wrong - Go back
+        </Button>
       </Box>
     );
   }
   return (
     <Grid container className={classes.containerSpaceAround}>
-      <Grid item sm={12} lg={4} style={{ marginBottom: '10px' }}>
+      <Grid item sm={12} lg={4} style={{ display: 'flex', marginBottom: '30px', justifyContent: 'center' }}>
         <img
           className={classes.poster}
           src={`https://image.tmdb.org/t/p/w500/${data?.poster_path}`}
@@ -74,7 +77,7 @@ function MovieInformation() {
             </Typography>
           </Box>
           <Typography variant="h6" align="center" gutterBottom>
-            {data?.runtime}min {data?.spoken_languages.length > 0 ? `| ${data?.spoken_languages[0].name}` : ''}
+            {data?.runtime}min | {data?.spoken_languages[0].name}
           </Typography>
         </Grid>
 
@@ -119,14 +122,14 @@ function MovieInformation() {
           ))}
         </Grid>
 
-        <Grid item container style={{ marginTop: '2rem' }}>
+        <Grid item container style={{ marginTop: '2rem' }} justifyContent="center">
           <div className={classes.buttonsContainer}>
             { /*website, IMDB, trailer*/ }
             <Grid item xs={12} sm={6} className={classes.buttonsContainer}>
               <ButtonGroup size="medium" variant="outlined">
                 <Button target="_blank" rel="noopener noreferrer" href={data?.homepage} endIcon={<Language />}>Website</Button>
                 <Button target="_blank" rel="noopener noreferrer" href={`https://www.imdb.com/title/${data?.imdb_id}`} endIcon={<MovieIcon />}>IMDB</Button>
-                <Button onClick={() => setOpen(true)} href="#" endIcon={<Theaters />}>Trailer</Button>
+                <Button onClick={() => setOpen(true)} endIcon={<Theaters />}>Trailer</Button>
               </ButtonGroup>
             </Grid>
 
@@ -139,8 +142,8 @@ function MovieInformation() {
                 <Button onClick={addToWatchlist} endIcon={isMovieWatchlisted ? <Remove /> : <PlusOne />}>
                   Watchlist
                 </Button>
-                <Button endIcon={<ArrowBack />} sx={{ borderColor: 'primary.main' }}>
-                  <Typography style={{ textDecoration: 'none' }} component={Link} to="/" color="inherit" variant="subtitle2">
+                <Button endIcon={<ArrowBack />} sx={{ borderColor: 'primary.main' }} onClick={() => history(-1)}>
+                  <Typography style={{ textDecoration: 'none' }} color="inherit" variant="subtitle2">
                     Back
                   </Typography>
                 </Button>
@@ -155,14 +158,21 @@ function MovieInformation() {
         <Typography variant="h3" align="center" gutterBottom>
           You might also like
         </Typography>
-        {recommendations && recommendations?.results?.length
-          ? <MovieList movies={recommendations} numberOfMovies={12} />
-          : <Box><Typography variant="h6" align="center">Sorry, nothing was found.</Typography></Box>}
+        {isRecommendationsFetching && (
+          <Box display="flex" justifyContent="center">
+            <CircularProgress size="4rem" />
+          </Box>
+        )}
+        {!isRecommendationsFetching && (
+          recommendations && recommendations?.results?.length
+            ? <MovieList movies={recommendations} numberOfMovies={12} />
+            : <Box><Typography variant="h6" align="center">Sorry, nothing was found.</Typography></Box>
+        )}
       </Box>
 
       { /*movie trailer*/ }
-      <Modal closeAfterTransition className={classes.modal} open={open} onClose={() => setOpen(false)}>
-        {data?.videos?.results?.length && (
+      {data?.videos?.results?.length > 0 && (
+        <Modal closeAfterTransition className={classes.modal} open={open} onClose={() => setOpen(false)}>
           <iframe
             autoPlay
             className={classes.video}
@@ -172,8 +182,8 @@ function MovieInformation() {
             allow="autoplay"
             allowFullScreen
           />
-        )}
-      </Modal>
+        </Modal>
+      )}
     </Grid>
   );
 }

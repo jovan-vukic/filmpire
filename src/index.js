@@ -8,6 +8,8 @@ import { Provider } from 'react-redux';
 import App from './components/App';
 import store from './app/store';
 
+import './index.css';
+
 //with ReactDOM we connect our app to the root div inside public/index.html
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const theme = createTheme({}); //for now we'll pass an empty object

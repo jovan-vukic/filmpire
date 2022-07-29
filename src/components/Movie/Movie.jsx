@@ -16,7 +16,11 @@ function Movie({ movie, i }) {
             className={classes.image}
             src={movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : 'https://www.fillmurray.com/200/300'}
           />
-          <Typography className={classes.title} variant="h5">{movie.title}</Typography>
+          <Tooltip disableTouchListener title={movie.title}>
+            <div>
+              <Typography className={classes.title} variant="h5">{movie.title}</Typography>
+            </div>
+          </Tooltip>
           <Tooltip disableTouchListener title={`${movie.vote_average} out of 10`}>
             <div>
               <Rating readOnly value={movie.vote_average / 2} precision={0.1} />

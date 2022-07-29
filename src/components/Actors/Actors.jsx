@@ -16,7 +16,7 @@ function Actors() {
   const { data, error, isFetching } = useGetActorsDetailsQuery(id);
 
   const [page, setPage] = useState(1);
-  const { data: movies, isMoviesFetching } = useGetMoviesByActorsIdQuery({ actorsId: id, page });
+  const { data: movies, isFetching: isMoviesFetching } = useGetMoviesByActorsIdQuery({ actorsId: id, page });
 
   if (isFetching) {
     return (
@@ -28,7 +28,7 @@ function Actors() {
   if (error) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center">
-        <Button startIcon={<ArrowBack />} onClick={() => history.goBack()} color="primary">
+        <Button startIcon={<ArrowBack />} onClick={() => history(-1)} color="primary">
           Go back
         </Button>
       </Box>
@@ -59,7 +59,7 @@ function Actors() {
             >
               IMDB
             </Button>
-            <Button startIcon={<ArrowBack />} onClick={() => history.goBack()} color="primary">
+            <Button startIcon={<ArrowBack />} onClick={() => history(-1)} color="primary">
               Back
             </Button>
           </Box>
@@ -67,10 +67,21 @@ function Actors() {
       </Grid>
       <Box margin="2rem 0">
         <Typography variant="h2" align="center" gutterBottom>Movies</Typography>
-        {movies && movies?.results?.length
-          ? <MovieList movies={movies} numberOfMovies={12} />
-          : <Box><Typography variant="h6" align="center">Sorry, nothing was found.</Typography></Box>}
-        <Pagination currentPage={page} setPage={setPage} totalPages={movies?.total_pages} />
+        {isMoviesFetching && (
+          <Box display="flex" justifyContent="center">
+            <CircularProgress size="4rem" />
+          </Box>
+        )}
+        {!isMoviesFetching && (
+          movies && movies?.results?.length
+            ? (
+              <>
+                <MovieList movies={movies} numberOfMovies={12} />
+                <Pagination currentPage={page} setPage={setPage} totalPages={movies?.total_pages} />
+              </>
+            )
+            : <Box><Typography variant="h6" align="center">Sorry, nothing was found.</Typography></Box>
+        )}
       </Box>
     </>
   );

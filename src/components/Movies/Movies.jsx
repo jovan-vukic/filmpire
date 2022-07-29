@@ -11,6 +11,10 @@ function Movies() {
   const { genreIdOrCategoryName, searchQuery } = useSelector((state) => state.currentGenreOrCategory);
   const { data, error, isFetching } = useGetMoviesQuery({ genreIdOrCategoryName, page, searchQuery }); //fetching data from an API
 
+  const mdDevice = useMediaQuery((theme) => theme.breakpoints.only('md'));
+  const xlPlusDevice = useMediaQuery((theme) => theme.breakpoints.up('xl'));
+  const numberOfMoviesToShow = mdDevice || xlPlusDevice ? 18 : data?.results?.length; //notice: data?.results?.length === 20
+
   if (isFetching) {
     return (
       <Box display="flex" justifyContent="center">
@@ -18,9 +22,15 @@ function Movies() {
       </Box>
     );
   }
-  if (error) return 'An error has ocured';
+  if (error) {
+    return (
+      <Box display="flex" alignItems="center" mt="20px">
+        <Typography variant="h4">An error has occured.</Typography>
+      </Box>
+    );
+  }
 
-  if (!data.results.length) { //if a person searches for a movie...
+  if (!data?.results?.length) { //if a person searches for a movie...
     return (
       <Box display="flex" alignItems="center" mt="20px">
         <Typography variant="h4">
@@ -33,7 +43,7 @@ function Movies() {
   }
   return (
     <>
-      <MovieList movies={data} />
+      <MovieList movies={data} numberOfMovies={numberOfMoviesToShow} />
       <Pagination currentPage={page} setPage={setPage} totalPages={data?.total_pages} />
     </>
   );

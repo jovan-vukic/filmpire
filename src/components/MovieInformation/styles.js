@@ -14,20 +14,16 @@ export default makeStyles((theme) => ({
   poster: {
     borderRadius: '20px',
     boxShadow: '0.5em 1em 1em rgb(64, 64, 70)',
-    marginLeft: '10% !important',
     width: '80%',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('xl')]: {
       margin: '0 auto',
-      marginLeft: '25% !important',
-      width: '50%',
-      height: '350px',
-    },
-    [theme.breakpoints.down('sm')]: {
-      margin: '0 auto',
-      marginLeft: '5% !important',
       width: '100%',
-      height: '350px',
-      marginBottom: '30px',
+      height: '60%',
+    },
+    [theme.breakpoints.down('lg')]: {
+      margin: '0 auto',
+      width: '100%',
+      height: '100%',
     },
   },
   genresContainer: {
@@ -58,9 +54,12 @@ export default makeStyles((theme) => ({
   },
   buttonsContainer: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     width: '100%',
-    inlineSize: 'fit-content',
+    alignItems: 'center',
+    [theme.breakpoints.down('xl')]: {
+      inlineSize: 'fit-content',
+    },
     [theme.breakpoints.down('lg')]: {
       flexDirection: 'column',
     },

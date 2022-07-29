@@ -11,5 +11,6 @@ export default makeStyles(() => ({
   content: {
     flexGrow: 1, //notice: 'flex-grow' (.css) => 'flexGrow' (.js)
     padding: '2em', //generates space around an element's content
+    width: '100%', //responsiveness adjustment
   },
 })); //notice: { return {...}; } <=> ({...})
