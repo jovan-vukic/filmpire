@@ -9,8 +9,8 @@ import { useGetGenresQuery } from '../../services/TMDB';
 import genreCategoryIcons from '../../assets/genres and categories';
 import { selectGenreOrCategory } from '../../features/currentGenreOrCategory';
 
-const lightLogo = 'https://fontmeme.com/permalink/210930/8531c658a743debe1e1aa1a2fc82006e.png';
-const darkLogo = 'https://fontmeme.com/permalink/210930/6854ae5c7f76597cf8680e48a2c8a50a.png';
+import lightLogo from '../../assets/images/lightLogo.png';
+import darkLogo from '../../assets/images/darkLogo.png';
 
 const categories = [
   { label: 'Popular', value: 'popular' },
@@ -24,7 +24,11 @@ function Sidebar({ setMobileOpen }) {
   const { data, isFetching } = useGetGenresQuery();
 
   const dispatch = useDispatch(); //allows us to dispatch actions
-  const { genreIdOrCategoryName } = useSelector((state) => state.currentGenreOrCategory); //will be used later
+  const { genreIdOrCategoryName } = useSelector((state) => state.currentGenreOrCategory);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [genreIdOrCategoryName]);
 
   return (
     <>

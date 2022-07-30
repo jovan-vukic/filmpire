@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Box, CircularProgress, useMediaQuery, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import { useGetMoviesQuery } from '../../services/TMDB';
-import { MovieList, Pagination } from '..';
-import { selectGenreOrCategory } from '../../features/currentGenreOrCategory';
+import { MovieList, Pagination, FeaturedMovie } from '..';
 
 function Movies() {
   const [page, setPage] = useState(1);
   const { genreIdOrCategoryName, searchQuery } = useSelector((state) => state.currentGenreOrCategory);
   const { data, error, isFetching } = useGetMoviesQuery({ genreIdOrCategoryName, page, searchQuery }); //fetching data from an API
 
-  const mdDevice = useMediaQuery((theme) => theme.breakpoints.only('md'));
-  const xlPlusDevice = useMediaQuery((theme) => theme.breakpoints.up('xl'));
-  const numberOfMoviesToShow = mdDevice || xlPlusDevice ? 18 : data?.results?.length; //notice: data?.results?.length === 20
+  const lgDevice = useMediaQuery((theme) => theme.breakpoints.only('lg'));
+  const numberOfMoviesToShow = lgDevice ? 17 : 19; //notice: data?.results?.length === 20
 
   if (isFetching) {
     return (
@@ -43,7 +41,8 @@ function Movies() {
   }
   return (
     <>
-      <MovieList movies={data} numberOfMovies={numberOfMoviesToShow} />
+      <FeaturedMovie movie={data?.results[0]} />
+      <MovieList movies={data} numberOfMovies={numberOfMoviesToShow} excludeFirst />
       <Pagination currentPage={page} setPage={setPage} totalPages={data?.total_pages} />
     </>
   );
