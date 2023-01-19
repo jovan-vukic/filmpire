@@ -56,14 +56,14 @@ Filmpire combines the desire to unleash powerful creativity with the industry's 
 
 Features include:
 * user authentication,
-* dark mode,
+* light and dark mode,
 * API calls with axios and Redux,
-* actor and movie details pages,
-* watchlists and lists of favorite movies,
-* movie search,
+* actors and movie details page,
+* watchlist and list of favorite movies,
+* movie search functionality,
 * Alan AI voice functionality and many more.
 
-Alan works as an in-app voice assistant for Filmpire.
+Alan works as an in-app voice assistant for the Filmpire project.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -94,15 +94,20 @@ Setup:
    npm install
    ```
 4. Create your `.env` file as it is instructed in `.env.example`.
+5. Enter your TMDB API key in your `.env`.
+
+   ```sh
+   REACT_APP_TMDB_KEY=<put your key here>
+   ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-For a full demonstration of all the functionalities of this phenomenal web application check out this [demo site](https://filmpire-jovan.netlify.app/). **Note that due to poor Netlify and Alan AI integration you have to follow the 'Installation' in order to use Alan AI functionalities.**
+For a full demonstration of all the functionalities of this phenomenal web application check out this [demo site](https://filmpire-jovan.netlify.app/).
 
-_For more detailes regarding TMDB API calls, please refer to the [Documentation](https://developers.themoviedb.org/3/getting-started/introduction)_
+_For more detailes regarding TMDB API calls, please refer to the [Documentation](https://developers.themoviedb.org/3/getting-started/introduction)._
 
 See the [open issues](https://github.com/jovan-vukic/filmpire/issues) for a full list of proposed features (and known issues).
 
